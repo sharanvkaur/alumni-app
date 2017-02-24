@@ -42,9 +42,10 @@ class StudentApp extends React.Component {
     axios.get(this.dataUrl)
       .then((res) => {
         this.setState({data:res.data});
+        // console.log(res.data);
+
       });
   }
-
 
   selectUser(user, userObj) {
     // console.log(this.state.data.login);
@@ -56,17 +57,19 @@ class StudentApp extends React.Component {
 
   render () {
     // console.log(this.state.userObj);
+    var allStudents =  this.state.data.map((student, i) => {
+      return (
+        <Card key={i} student={student} selectMe={this.selectUser} />
+      )
+    })
+
     return (
       <div className="mycontainer">
         <div id="main-container">
           <div>
              <Title studentCount={this.state.data.length}/>
              <div className="card-deck">
-             {this.state.data.map((student, i) => {
-               return (
-              <Card key={i} student={student} selectMe={this.selectUser} />
-              )
-            })}
+            {allStudents}
           </div>
         </div>
       </div>
@@ -92,9 +95,7 @@ class Card extends React.Component {
   componentDidMount(){
     axios.get(this.infoUrl)
       .then((res) => {
-        this.setState({
-          data:res.data
-        });
+        this.setState({data:res.data});
         // console.log(res.data);
       });
   }
@@ -118,11 +119,11 @@ class Card extends React.Component {
   }
 }
 
-
 const Project = (props) => {
   // console.log(props.project);
   // console.log(props.boop.repos_url)
   var blah = 'https://github.com/' + props.project.githubLogin
+
   return(
     <div>
 
@@ -137,7 +138,8 @@ const Project = (props) => {
           <a href={blah + '/' + props.project.project1.repoName} className="card-link">github repo</a>
           <a href={props.project.project1.deployedUrl} className="card-link">deployed project</a>
         </p>
-        <img className="preview" src={props.project.project1.previewImage} />
+
+        <img className="preview" src={props.project.project1.previewImage || 'http://placehold.it/350x200'} />
       </div>
       <div className="card-block">
         <h3>{props.project.project2.repoName}</h3>
@@ -145,7 +147,7 @@ const Project = (props) => {
         <a href={blah + '/' + props.project.project2.repoName} className="card-link">github repo</a>
           <a href={props.project.project2.deployedUrl} className="card-link">deployed project</a>
         </p>
-        <img className="preview" src={props.project.project2.previewImage} />
+        <img className="preview" src={props.project.project2.previewImage || 'http://placehold.it/350x200'} />
       </div>
       <div className="card-block">
         <h3>{props.project.project3.repoName}</h3>
@@ -153,7 +155,7 @@ const Project = (props) => {
         <a href={blah + '/' + props.project.project3.repoName} className="card-link">github repo</a>
           <a href={props.project.project3.deployedUrl} className="card-link">deployed project</a>
         </p>
-        <img className="preview" src={props.project.project3.previewImage} />
+        <img className="preview" src={props.project.project3.previewImage || 'http://placehold.it/350x200'} />
       </div>
 
 
